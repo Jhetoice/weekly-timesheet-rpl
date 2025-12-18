@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weekly Timesheet - RPL</title>
+
+  <style>
+* { box-sizing: border-box; }
+
+html, body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #111;
+  margin: 0;
+  padding: 0;
+}
+
+body { margin: 24px; }
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+}
+
+.note {
+  font-size: 12px;
+  color: #555;
+  margin: 0 0 14px 0;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #444;
+  display: block;
+  margin-bottom: 4px;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 13px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+}
+
+textarea { min-height: 80px; }
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border-color: #e11d48;
+  background: #fff5f5;
+}
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+button {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.primary { background: #111; color: #fff; }
+.ghost { background: #f3f3f3; }
+.danger { background: #ffe7e7; }
+
+.wrap {
+  overflow: auto;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+}
+
+#tsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+#tsTable th,
+#tsTable td {
+  border-right: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 10px;
+  vertical-align: middle;
+  background: #fff;
+  text-align: center;
+}
+
+#tsTable th:first-child,
+#tsTable td:first-child {
+  border-left: 1px solid #e8e8e8;
+}
+
+#tsTable thead th {
+  border-top: 1px solid #e8e8e8;
+  background: #fafafa;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  font-weight: 600;
+}
+
+#tsTable thead th:first-child { border-top-left-radius: 12px; }
+#tsTable thead th:last-child  { border-top-right-radius: 12px; }
+
+#tsTable .left { text-align: left; }
+#tsTable tbody tr:nth-child(even) td { background: #fcfcfc; }
+
+#tsTable input,
+#tsTable select {
+  width: 100%;
+  max-width: 100%;
+  height: 36px;
+  padding: 6px 8px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  background: #fff;
+  outline: none;
+}
+
+#tsTable input[readonly] { background: #fbfbfb; }
+
+#tsTable button {
+  width: 100%;
+  height: 36px;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+#tsTable td:first-child { white-space: nowrap; }
+
+#tsTable td:first-child input {
+  min-width: 200px;
+  text-align: left;
+  font-weight: 500;
+}
+
+#tsTable thead th:first-child { text-align: left; }
+
+.totals {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.pill {
+  background: #f6f6f6;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+  </style>
+</head>
+
+<body>
+  <h2>Weekly Timesheet RPL</h2>
+  <p class="note">
+    Nota operativa: el formato original indica que deben entregar copia del DFS por cada día trabajado y sin DFS no es válido.
+  </p>
+
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label>Company Name *</label>
+        <input id="companyName" placeholder="Ej: BluSky / Servpro / ..." required />
+      </div>
+      <div>
+        <label>JobSite Address *</label>
+        <input id="jobSiteAddress" placeholder="Dirección del proyecto" required />
+      </div>
+      <div>
+        <label>Week Ending Date</label>
+        <input id="weekEnding" type="date" />
+      </div>
+      <div>
+        <label>Ticket #</label>
+        <input id="ticket" placeholder="Ticket / Work Order" value="0000039300" />
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:12px;">
+      <div>
+        <label>Job Name</label>
+        <input id="jobName" placeholder="Nombre del job" />
+      </div>
+      <div>
+        <label>Job Order #</label>
+        <input id="jobOrder" placeholder="Job Order" />
+      </div>
+      <div>
+        <label>PO #</label>
+        <input id="po" placeholder="PO (si aplica)" />
+      </div>
+      <div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="actions" style="margin-bottom:12px;">
+      <button class="ghost" id="addRowBtn" type="button">+ Agregar empleado</button>
+      <button class="danger" id="clearBtn" type="button">Limpiar</button>
+      <button class="primary" id="submitBtn" type="button">Enviar a n8n</button>
+    </div>
+
+    <div class="wrap">
+      <table id="tsTable">
+        <colgroup>
+          <col style="width: 220px;">
+          <col style="width: 80px;">
+          <col span="21" style="width: 70px;">
+          <col style="width: 110px;">
+          <col style="width: 90px;">
+        </colgroup>
+
+        <thead>
+          <tr>
+            <th class="left">Employee Name</th>
+            <th>Asmt</th>
+
+            <th>Mon H</th><th>Mon B</th><th>Mon W</th>
+            <th>Tue H</th><th>Tue B</th><th>Tue W</th>
+            <th>Wed H</th><th>Wed B</th><th>Wed W</th>
+            <th>Thu H</th><th>Thu B</th><th>Thu W</th>
+            <th>Fri H</th><th>Fri B</th><th>Fri W</th>
+            <th>Sat H</th><th>Sat B</th><th>Sat W</th>
+            <th>Sun H</th><th>Sun B</th><th>Sun W</th>
+
+            <th>Weekly Total (W)</th>
+            <th>Edicion</th>
+          </tr>
+        </thead>
+
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:12px;" class="totals">
+      <span class="pill">Total Worked (All): <b id="grandTotal">0.00</b> h</span>
+      <span class="pill">Empleados: <b id="empCount">0</b></span>
+    </div>
+
+    <div class="grid2" style="margin-top:12px;">
+      <div>
+        <label>Authorized Name *</label>
+        <input id="authorizedName" placeholder="Nombre autorizado" required />
+      </div>
+      <div>
+        <label>Authorized Signature *</label>
+        <input id="signature" placeholder="Firma / Nombre" required />
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <label>Notas</label>
+      <textarea id="notes" placeholder="Observaciones / incidentes / DFS, etc."></textarea>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   CONFIG (CAMBIA ESTO)
+========================= */
+const N8N_WEBHOOK_URL = "https://jarvis-n8n.mxvkbj.easypanel.host/webhook-test/f55375ca-54eb-4afe-a607-d9551dd7be41";
+const WEBHOOK_SECRET = "8f2a9c1d-4e3b-4c91-9b2a-6e7f8d0c1234";
+
+/* =========================
+   LOGIC
+========================= */
+const days = ["mon","tue","wed","thu","fri","sat","sun"];
+const tbody = document.getElementById("tbody");
+const grandTotalEl = document.getElementById("grandTotal");
+const empCountEl = document.getElementById("empCount");
+
+function num(v) {
+  const n = parseFloat(String(v).replace(",", "."));
+  return Number.isFinite(n) ? n : 0;
+}
+function format2(n) { return (Math.round(n * 100) / 100).toFixed(2); }
+
+function makeCellInput(placeholder="0") {
+  const inp = document.createElement("input");
+  inp.type = "number";
+  inp.step = "0.25";
+  inp.min = "0";
+  inp.placeholder = placeholder;
+  inp.addEventListener("input", recalcAll);
+  return inp;
+}
+
+function addRow(prefillName="") {
+  const tr = document.createElement("tr");
+
+  const tdName = document.createElement("td");
+  tdName.className = "left";
+  const nameInp = document.createElement("input");
+  nameInp.placeholder = "Nombre y Apellido";
+  nameInp.value = prefillName;
+  nameInp.required = true;
+  nameInp.addEventListener("input", recalcAll);
+  tdName.appendChild(nameInp);
+  tr.appendChild(tdName);
+
+  const tdAsmt = document.createElement("td");
+  const asmtSel = document.createElement("select");
+  asmtSel.required = true;
+
+  ["", "Sup", "L", "L/D", "D", "GL"].forEach(v => {
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v || "—";
+    asmtSel.appendChild(opt);
+  });
+
+  asmtSel.addEventListener("change", recalcAll);
+  tdAsmt.appendChild(asmtSel);
+  tr.appendChild(tdAsmt);
+
+  days.forEach(d => {
+    const tdH = document.createElement("td");
+    const h = makeCellInput();
+    h.dataset.kind = "hours";
+    h.dataset.day = d;
+    tdH.appendChild(h);
+    tr.appendChild(tdH);
+
+    const tdB = document.createElement("td");
+    const b = makeCellInput("0");
+    b.dataset.kind = "break";
+    b.dataset.day = d;
+    tdB.appendChild(b);
+    tr.appendChild(tdB);
+
+    const tdW = document.createElement("td");
+    const w = document.createElement("input");
+    w.type = "text";
+    w.readOnly = true;
+    w.value = "0.00";
+    w.dataset.kind = "worked";
+    w.dataset.day = d;
+    tdW.appendChild(w);
+    tr.appendChild(tdW);
+  });
+
+  const tdTotal = document.createElement("td");
+  const total = document.createElement("input");
+  total.type = "text";
+  total.readOnly = true;
+  total.value = "0.00";
+  total.dataset.kind = "weeklyTotal";
+  tdTotal.appendChild(total);
+  tr.appendChild(tdTotal);
+
+  const tdAct = document.createElement("td");
+  const rm = document.createElement("button");
+  rm.type = "button";
+  rm.className = "ghost";
+  rm.textContent = "Borrar";
+  rm.addEventListener("click", () => { tr.remove(); recalcAll(); });
+  tdAct.appendChild(rm);
+  tr.appendChild(tdAct);
+
+  tbody.appendChild(tr);
+  recalcAll();
+}
+
+function recalcRow(tr) {
+  let rowTotal = 0;
+  days.forEach(d => {
+    const h = tr.querySelector(`input[data-day="${d}"][data-kind="hours"]`);
+    const b = tr.querySelector(`input[data-day="${d}"][data-kind="break"]`);
+    const w = tr.querySelector(`input[data-day="${d}"][data-kind="worked"]`);
+    const worked = Math.max(0, num(h.value) - num(b.value));
+    w.value = format2(worked);
+    rowTotal += worked;
+  });
+  tr.querySelector(`input[data-kind="weeklyTotal"]`).value = format2(rowTotal);
+  return rowTotal;
+}
+
+function recalcAll() {
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  let grand = 0;
+  rows.forEach(r => grand += recalcRow(r));
+  grandTotalEl.textContent = format2(grand);
+  empCountEl.textContent = String(rows.length);
+}
+
+function collectData() {
+  const employees = Array.from(tbody.querySelectorAll("tr")).map(tr => {
+    const name = tr.querySelector("td.left input").value.trim();
+    const asmt = tr.querySelector("td:nth-child(2) select").value;
+
+    const perDay = {};
+    days.forEach(d => {
+      const h = tr.querySelector(`input[data-day="${d}"][data-kind="hours"]`).value;
+      const b = tr.querySelector(`input[data-day="${d}"][data-kind="break"]`).value;
+      const w = tr.querySelector(`input[data-day="${d}"][data-kind="worked"]`).value;
+      perDay[d] = { hours: num(h), break: num(b), worked: num(w) };
+    });
+
+    const weeklyTotal = num(tr.querySelector(`input[data-kind="weeklyTotal"]`).value);
+    return { employeeName: name, asmt, days: perDay, weeklyTotal };
+  });
+
+  return {
+    companyName: document.getElementById("companyName").value.trim(),
+    jobSiteAddress: document.getElementById("jobSiteAddress").value.trim(),
+    weekEnding: document.getElementById("weekEnding").value,
+    ticket: document.getElementById("ticket").value.trim(),
+    jobName: document.getElementById("jobName").value.trim(),
+    jobOrder: document.getElementById("jobOrder").value.trim(),
+    po: document.getElementById("po").value.trim(),
+    authorizedName: document.getElementById("authorizedName").value.trim(),
+    signature: document.getElementById("signature").value.trim(),
+    notes: document.getElementById("notes").value.trim(),
+    employees,
+    grandTotalWorked: num(document.getElementById("grandTotal").textContent)
+  };
+}
+
+function validateRequiredHeaderFields() {
+  const companyName    = document.getElementById("companyName");
+  const jobSiteAddress = document.getElementById("jobSiteAddress");
+  const authorizedName = document.getElementById("authorizedName");
+  const signature      = document.getElementById("signature");
+
+  companyName.reportValidity();
+  jobSiteAddress.reportValidity();
+  authorizedName.reportValidity();
+  signature.reportValidity();
+
+  if (!companyName.value.trim() || !jobSiteAddress.value.trim() ||
+      !authorizedName.value.trim() || !signature.value.trim()) {
+    alert("Faltan campos obligatorios: Company Name, JobSite Address, Authorized Name, Authorized Signature.");
+    return false;
+  }
+  return true;
+}
+
+function validateEmployees() {
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  if (!rows.length) { alert("Agrega al menos 1 empleado."); return false; }
+
+  for (let i = 0; i < rows.length; i++) {
+    const tr = rows[i];
+    const nameInp = tr.querySelector("td.left input");
+    const asmtSel = tr.querySelector("td:nth-child(2) select");
+    nameInp.reportValidity();
+    asmtSel.reportValidity();
+
+    if (!nameInp.value.trim()) { alert(`Empleado #${i+1}: falta nombre.`); nameInp.focus(); return false; }
+    if (!asmtSel.value) { alert(`Empleado #${i+1}: falta ASMT.`); asmtSel.focus(); return false; }
+  }
+  return true;
+}
+
+async function submitToN8n() {
+  if (!validateRequiredHeaderFields()) return;
+  if (!validateEmployees()) return;
+
+  const payload = collectData();
+
+  try {
+    const res = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ secret: WEBHOOK_SECRET, ...payload })
+    });
+
+    const text = await res.text().catch(() => "");
+    console.log("n8n status:", res.status);
+    console.log("n8n body:", text);
+
+    if (!res.ok) throw new Error("n8n respondió " + res.status + " " + text);
+
+    alert("Enviado correctamente.");
+  } catch (e) {
+    console.error("FETCH ERROR:", e);
+    alert("Error enviando: " + e.message);
+  }
+}
+
+document.getElementById("addRowBtn").addEventListener("click", () => addRow());
+document.getElementById("clearBtn").addEventListener("click", () => {
+  if (!confirm("¿Seguro que quieres limpiar todo?")) return;
+  tbody.innerHTML = "";
+  recalcAll();
+});
+document.getElementById("submitBtn").addEventListener("click", () => submitToN8n());
+
+// Arranque: 4 filas
+addRow(); addRow(); addRow(); addRow();
+</script>
+
+</body>
+</html>
