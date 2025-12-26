@@ -512,6 +512,7 @@ async function submitToN8n() {
     if (!res.ok) throw new Error("n8n respondió " + res.status + " " + text);
 
     alert("Enviado correctamente.");
+    resetFormAfterSubmit();
   } catch (e) {
     console.error("FETCH ERROR:", e);
     alert("Error enviando: " + e.message);
@@ -528,6 +529,33 @@ document.getElementById("submitBtn").addEventListener("click", () => submitToN8n
 
 // Arranque: 4 filas
 addRow(); addRow(); addRow(); addRow();
+function resetFormAfterSubmit() {
+  
+// Cabecera
+  document.getElementById("companyName").value = "";
+  document.getElementById("jobSiteAddress").value = "";
+  document.getElementById("weekEnding").value = "";
+  document.getElementById("ticket").value = "";
+  document.getElementById("jobName").value = "";
+  document.getElementById("jobOrder").value = "";
+  document.getElementById("po").value = "";
+  document.getElementById("authorizedName").value = "";
+  document.getElementById("signature").value = "";
+  document.getElementById("notes").value = "";
+
+// Tabla
+  tbody.innerHTML = "";
+
+// Totales
+  grandTotalEl.textContent = "0.00";
+  empCountEl.textContent = "0";
+
+// Filas iniciales (ajusta el número si quieres)
+  addRow();
+  addRow();
+  addRow();
+  addRow();
+}
 </script>
 
 </body>
