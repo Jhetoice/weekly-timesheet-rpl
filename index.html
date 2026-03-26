@@ -523,7 +523,7 @@ async function submitToN8n() {
     console.error("FETCH ERROR:", e);
     alert("Error enviando: " + e.message);
   }
-    document.getElementById("senderEmail").value = "";
+   
 }
 
 document.getElementById("addRowBtn").addEventListener("click", () => addRow());
@@ -556,6 +556,7 @@ function resetFormAfterSubmit() {
 // Totales
   grandTotalEl.textContent = "0.00";
   empCountEl.textContent = "0";
+  document.getElementById("senderEmail").value = "";
 
 // Filas iniciales (ajusta el número si quieres)
   addRow();
