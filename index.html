@@ -214,6 +214,10 @@ button {
         <label>Ticket #</label>
         <input id="ticket" placeholder="Ticket / Work Order" value="0000039300" />
       </div>
+         <div>
+         <label>Email para recibir copia *</label>
+         <input id="senderEmail" type="email" placeholder="tu@email.com" required />
+         </div>
     </div>
 
     <div class="grid" style="margin-top:12px;">
@@ -427,6 +431,7 @@ function collectData() {
   const employees = Array.from(tbody.querySelectorAll("tr")).map(tr => {
     const name = tr.querySelector("td.left input").value.trim();
     const asmt = tr.querySelector("td:nth-child(2) select").value;
+    
 
     const perDay = {};
     days.forEach(d => {
@@ -438,6 +443,7 @@ function collectData() {
 
     const weeklyTotal = num(tr.querySelector(`input[data-kind="weeklyTotal"]`).value);
     return { employeeName: name, asmt, days: perDay, weeklyTotal };
+    senderEmail: document.getElementById("senderEmail").value.trim(),
   });
 
   return {
@@ -517,6 +523,7 @@ async function submitToN8n() {
     console.error("FETCH ERROR:", e);
     alert("Error enviando: " + e.message);
   }
+    document.getElementById("senderEmail").value = "";
 }
 
 document.getElementById("addRowBtn").addEventListener("click", () => addRow());
