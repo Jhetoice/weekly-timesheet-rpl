@@ -431,7 +431,8 @@ function collectData() {
   const employees = Array.from(tbody.querySelectorAll("tr")).map(tr => {
     const name = tr.querySelector("td.left input").value.trim();
     const asmt = tr.querySelector("td:nth-child(2) select").value;
-    enderEmail: document.getElementById("senderEmail").value.trim(),
+    senderEmail: document.getElementById("senderEmail").value.trim(),
+  
 
     const perDay = {};
     days.forEach(d => {
@@ -443,7 +444,6 @@ function collectData() {
 
     const weeklyTotal = num(tr.querySelector(`input[data-kind="weeklyTotal"]`).value);
     return { employeeName: name, asmt, days: perDay, weeklyTotal };
-    s
   });
 
   return {
