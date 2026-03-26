@@ -6,187 +6,187 @@
   <title>Weekly Timesheet - RPL</title>
 
   <style>
-* { box-sizing: border-box; }
+    * { box-sizing: border-box; }
 
-html, body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont,
-               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #111;
-  margin: 0;
-  padding: 0;
-}
+    html, body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #111;
+      margin: 0;
+      padding: 0;
+    }
 
-body { margin: 24px; }
+    body { margin: 24px; }
 
-.card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #fff;
-}
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #fff;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-.grid2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
+    .grid2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-@media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr 1fr; }
-  .grid2 { grid-template-columns: 1fr; }
-}
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .grid2 { grid-template-columns: 1fr; }
+    }
 
-h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 6px 0;
-}
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 6px 0;
+    }
 
-.note {
-  font-size: 12px;
-  color: #555;
-  margin: 0 0 14px 0;
-}
+    .note {
+      font-size: 12px;
+      color: #555;
+      margin: 0 0 14px 0;
+    }
 
-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: #444;
-  display: block;
-  margin-bottom: 4px;
-}
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #444;
+      display: block;
+      margin-bottom: 4px;
+    }
 
-input, select, textarea {
-  font-family: inherit;
-  font-size: 13px;
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background: #fff;
-}
+    input, select, textarea {
+      font-family: inherit;
+      font-size: 13px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #fff;
+    }
 
-textarea { min-height: 80px; }
+    textarea { min-height: 80px; }
 
-input:invalid,
-select:invalid,
-textarea:invalid {
-  border-color: #e11d48;
-  background: #fff5f5;
-}
+    input:invalid,
+    select:invalid,
+    textarea:invalid {
+      border-color: #e11d48;
+      background: #fff5f5;
+    }
 
-.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
-button {
-  font-family: inherit;
-  font-size: 13px;
-  padding: 10px 14px;
-  border: 0;
-  border-radius: 10px;
-  cursor: pointer;
-}
+    button {
+      font-family: inherit;
+      font-size: 13px;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
 
-.primary { background: #111; color: #fff; }
-.ghost { background: #f3f3f3; }
-.danger { background: #ffe7e7; }
+    .primary { background: #111; color: #fff; }
+    .ghost { background: #f3f3f3; }
+    .danger { background: #ffe7e7; }
 
-.wrap {
-  overflow: auto;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background: #fff;
-}
+    .wrap {
+      overflow: auto;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+    }
 
-#tsTable {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  table-layout: fixed;
-}
+    #tsTable {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+    }
 
-#tsTable th,
-#tsTable td {
-  border-right: 1px solid #e8e8e8;
-  border-bottom: 1px solid #e8e8e8;
-  padding: 10px;
-  vertical-align: middle;
-  background: #fff;
-  text-align: center;
-}
+    #tsTable th,
+    #tsTable td {
+      border-right: 1px solid #e8e8e8;
+      border-bottom: 1px solid #e8e8e8;
+      padding: 10px;
+      vertical-align: middle;
+      background: #fff;
+      text-align: center;
+    }
 
-#tsTable th:first-child,
-#tsTable td:first-child {
-  border-left: 1px solid #e8e8e8;
-}
+    #tsTable th:first-child,
+    #tsTable td:first-child {
+      border-left: 1px solid #e8e8e8;
+    }
 
-#tsTable thead th {
-  border-top: 1px solid #e8e8e8;
-  background: #fafafa;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  font-weight: 600;
-}
+    #tsTable thead th {
+      border-top: 1px solid #e8e8e8;
+      background: #fafafa;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      font-weight: 600;
+    }
 
-#tsTable thead th:first-child { border-top-left-radius: 12px; }
-#tsTable thead th:last-child  { border-top-right-radius: 12px; }
+    #tsTable thead th:first-child { border-top-left-radius: 12px; }
+    #tsTable thead th:last-child  { border-top-right-radius: 12px; }
 
-#tsTable .left { text-align: left; }
-#tsTable tbody tr:nth-child(even) td { background: #fcfcfc; }
+    #tsTable .left { text-align: left; }
+    #tsTable tbody tr:nth-child(even) td { background: #fcfcfc; }
 
-#tsTable input,
-#tsTable select {
-  width: 100%;
-  max-width: 100%;
-  height: 36px;
-  padding: 6px 8px;
-  border: 1px solid #d6d6d6;
-  border-radius: 8px;
-  background: #fff;
-  outline: none;
-}
+    #tsTable input,
+    #tsTable select {
+      width: 100%;
+      max-width: 100%;
+      height: 36px;
+      padding: 6px 8px;
+      border: 1px solid #d6d6d6;
+      border-radius: 8px;
+      background: #fff;
+      outline: none;
+    }
 
-#tsTable input[readonly] { background: #fbfbfb; }
+    #tsTable input[readonly] { background: #fbfbfb; }
 
-#tsTable button {
-  width: 100%;
-  height: 36px;
-  padding: 6px 10px;
-  border-radius: 10px;
-}
+    #tsTable button {
+      width: 100%;
+      height: 36px;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
 
-#tsTable td:first-child { white-space: nowrap; }
+    #tsTable td:first-child { white-space: nowrap; }
 
-#tsTable td:first-child input {
-  min-width: 200px;
-  text-align: left;
-  font-weight: 500;
-}
+    #tsTable td:first-child input {
+      min-width: 200px;
+      text-align: left;
+      font-weight: 500;
+    }
 
-#tsTable thead th:first-child { text-align: left; }
+    #tsTable thead th:first-child { text-align: left; }
 
-.totals {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-top: 12px;
-}
+    .totals {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 12px;
+    }
 
-.pill {
-  background: #f6f6f6;
-  padding: 8px 10px;
-  border-radius: 999px;
-  font-size: 13px;
-}
+    .pill {
+      background: #f6f6f6;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
   </style>
 </head>
 
@@ -229,11 +229,10 @@ button {
         <label>PO #</label>
         <input id="po" placeholder="PO (si aplica)" />
       </div>
-       <div>
-         <label>Email para recibir copia *</label>
-         <input id="senderEmail" type="email" placeholder="tu@email.com" required />
-         </div>
-      <div></div>
+      <div>
+        <label>Email para recibir copia *</label>
+        <input id="senderEmail" type="email" placeholder="tu@email.com" required />
+      </div>
     </div>
   </div>
 
@@ -268,7 +267,7 @@ button {
             <th>Sun H</th><th>Sun B</th><th>Sun W</th>
 
             <th>Weekly Total (W)</th>
-            <th>Edicion</th>
+            <th>Edición</th>
           </tr>
         </thead>
 
@@ -317,9 +316,12 @@ function num(v) {
   const n = parseFloat(String(v).replace(",", "."));
   return Number.isFinite(n) ? n : 0;
 }
-function format2(n) { return (Math.round(n * 100) / 100).toFixed(2); }
 
-function makeCellInput(placeholder="0") {
+function format2(n) {
+  return (Math.round(n * 100) / 100).toFixed(2);
+}
+
+function makeCellInput(placeholder = "0") {
   const inp = document.createElement("input");
   inp.type = "number";
   inp.step = "0.25";
@@ -329,7 +331,7 @@ function makeCellInput(placeholder="0") {
   return inp;
 }
 
-function addRow(prefillName="") {
+function addRow(prefillName = "") {
   const tr = document.createElement("tr");
 
   const tdName = document.createElement("td");
@@ -397,7 +399,10 @@ function addRow(prefillName="") {
   rm.type = "button";
   rm.className = "ghost";
   rm.textContent = "Borrar";
-  rm.addEventListener("click", () => { tr.remove(); recalcAll(); });
+  rm.addEventListener("click", () => {
+    tr.remove();
+    recalcAll();
+  });
   tdAct.appendChild(rm);
   tr.appendChild(tdAct);
 
@@ -407,14 +412,17 @@ function addRow(prefillName="") {
 
 function recalcRow(tr) {
   let rowTotal = 0;
+
   days.forEach(d => {
     const h = tr.querySelector(`input[data-day="${d}"][data-kind="hours"]`);
     const b = tr.querySelector(`input[data-day="${d}"][data-kind="break"]`);
     const w = tr.querySelector(`input[data-day="${d}"][data-kind="worked"]`);
+
     const worked = Math.max(0, num(h.value) - num(b.value));
     w.value = format2(worked);
     rowTotal += worked;
   });
+
   tr.querySelector(`input[data-kind="weeklyTotal"]`).value = format2(rowTotal);
   return rowTotal;
 }
@@ -422,7 +430,11 @@ function recalcRow(tr) {
 function recalcAll() {
   const rows = Array.from(tbody.querySelectorAll("tr"));
   let grand = 0;
-  rows.forEach(r => grand += recalcRow(r));
+
+  rows.forEach(r => {
+    grand += recalcRow(r);
+  });
+
   grandTotalEl.textContent = format2(grand);
   empCountEl.textContent = String(rows.length);
 }
@@ -431,19 +443,28 @@ function collectData() {
   const employees = Array.from(tbody.querySelectorAll("tr")).map(tr => {
     const name = tr.querySelector("td.left input").value.trim();
     const asmt = tr.querySelector("td:nth-child(2) select").value;
-    senderEmail: document.getElementById("senderEmail").value.trim(),
-  
 
     const perDay = {};
     days.forEach(d => {
       const h = tr.querySelector(`input[data-day="${d}"][data-kind="hours"]`).value;
       const b = tr.querySelector(`input[data-day="${d}"][data-kind="break"]`).value;
       const w = tr.querySelector(`input[data-day="${d}"][data-kind="worked"]`).value;
-      perDay[d] = { hours: num(h), break: num(b), worked: num(w) };
+
+      perDay[d] = {
+        hours: num(h),
+        break: num(b),
+        worked: num(w)
+      };
     });
 
     const weeklyTotal = num(tr.querySelector(`input[data-kind="weeklyTotal"]`).value);
-    return { employeeName: name, asmt, days: perDay, weeklyTotal };
+
+    return {
+      employeeName: name,
+      asmt,
+      days: perDay,
+      weeklyTotal
+    };
   });
 
   return {
@@ -454,6 +475,7 @@ function collectData() {
     jobName: document.getElementById("jobName").value.trim(),
     jobOrder: document.getElementById("jobOrder").value.trim(),
     po: document.getElementById("po").value.trim(),
+    senderEmail: document.getElementById("senderEmail").value.trim(),
     authorizedName: document.getElementById("authorizedName").value.trim(),
     signature: document.getElementById("signature").value.trim(),
     notes: document.getElementById("notes").value.trim(),
@@ -465,36 +487,59 @@ function collectData() {
 function validateRequiredHeaderFields() {
   const companyName    = document.getElementById("companyName");
   const jobSiteAddress = document.getElementById("jobSiteAddress");
+  const senderEmail    = document.getElementById("senderEmail");
   const authorizedName = document.getElementById("authorizedName");
   const signature      = document.getElementById("signature");
 
   companyName.reportValidity();
   jobSiteAddress.reportValidity();
+  senderEmail.reportValidity();
   authorizedName.reportValidity();
   signature.reportValidity();
 
-  if (!companyName.value.trim() || !jobSiteAddress.value.trim() ||
-      !authorizedName.value.trim() || !signature.value.trim()) {
-    alert("Faltan campos obligatorios: Company Name, JobSite Address, Authorized Name, Authorized Signature.");
+  if (
+    !companyName.value.trim() ||
+    !jobSiteAddress.value.trim() ||
+    !senderEmail.value.trim() ||
+    !authorizedName.value.trim() ||
+    !signature.value.trim()
+  ) {
+    alert("Faltan campos obligatorios: Company Name, JobSite Address, Email para recibir copia, Authorized Name, Authorized Signature.");
     return false;
   }
+
   return true;
 }
 
 function validateEmployees() {
   const rows = Array.from(tbody.querySelectorAll("tr"));
-  if (!rows.length) { alert("Agrega al menos 1 empleado."); return false; }
+
+  if (!rows.length) {
+    alert("Agrega al menos 1 empleado.");
+    return false;
+  }
 
   for (let i = 0; i < rows.length; i++) {
     const tr = rows[i];
     const nameInp = tr.querySelector("td.left input");
     const asmtSel = tr.querySelector("td:nth-child(2) select");
+
     nameInp.reportValidity();
     asmtSel.reportValidity();
 
-    if (!nameInp.value.trim()) { alert(`Empleado #${i+1}: falta nombre.`); nameInp.focus(); return false; }
-    if (!asmtSel.value) { alert(`Empleado #${i+1}: falta ASMT.`); asmtSel.focus(); return false; }
+    if (!nameInp.value.trim()) {
+      alert(`Empleado #${i + 1}: falta nombre.`);
+      nameInp.focus();
+      return false;
+    }
+
+    if (!asmtSel.value) {
+      alert(`Empleado #${i + 1}: falta ASMT.`);
+      asmtSel.focus();
+      return false;
+    }
   }
+
   return true;
 }
 
@@ -515,7 +560,9 @@ async function submitToN8n() {
     console.log("n8n status:", res.status);
     console.log("n8n body:", text);
 
-    if (!res.ok) throw new Error("n8n respondió " + res.status + " " + text);
+    if (!res.ok) {
+      throw new Error("n8n respondió " + res.status + " " + text);
+    }
 
     alert("Enviado correctamente.");
     resetFormAfterSubmit();
@@ -523,22 +570,9 @@ async function submitToN8n() {
     console.error("FETCH ERROR:", e);
     alert("Error enviando: " + e.message);
   }
-   
 }
 
-document.getElementById("addRowBtn").addEventListener("click", () => addRow());
-document.getElementById("clearBtn").addEventListener("click", () => {
-  if (!confirm("¿Seguro que quieres limpiar todo?")) return;
-  tbody.innerHTML = "";
-  recalcAll();
-});
-document.getElementById("submitBtn").addEventListener("click", () => submitToN8n());
-
-// Arranque: 4 filas
-addRow(); addRow(); addRow(); addRow();
 function resetFormAfterSubmit() {
-  
-// Cabecera
   document.getElementById("companyName").value = "";
   document.getElementById("jobSiteAddress").value = "";
   document.getElementById("weekEnding").value = "";
@@ -546,24 +580,37 @@ function resetFormAfterSubmit() {
   document.getElementById("jobName").value = "";
   document.getElementById("jobOrder").value = "";
   document.getElementById("po").value = "";
+  document.getElementById("senderEmail").value = "";
   document.getElementById("authorizedName").value = "";
   document.getElementById("signature").value = "";
   document.getElementById("notes").value = "";
 
-// Tabla
   tbody.innerHTML = "";
-
-// Totales
   grandTotalEl.textContent = "0.00";
   empCountEl.textContent = "0";
 
-
-// Filas iniciales (ajusta el número si quieres)
   addRow();
   addRow();
   addRow();
   addRow();
 }
+
+document.getElementById("addRowBtn").addEventListener("click", () => addRow());
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  if (!confirm("¿Seguro que quieres limpiar todo?")) return;
+
+  tbody.innerHTML = "";
+  recalcAll();
+});
+
+document.getElementById("submitBtn").addEventListener("click", () => submitToN8n());
+
+// Arranque: 4 filas
+addRow();
+addRow();
+addRow();
+addRow();
 </script>
 
 </body>
